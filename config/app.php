@@ -185,4 +185,9 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+    'token_name' => 'login',
+    'punk_api_url' => 'https://api.punkapi.com/v2/',
+    'punk_api_perpage' => 3,
+    'user_home_route_name' => 'beers'
 ];

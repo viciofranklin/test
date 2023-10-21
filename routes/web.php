@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return  redirect()->route( request()->user() ? config('app.user_home_route_name') : 'login') ;
 });
+
+Route::get('user/login', function() {
+    return view('login');
+})->name('login');
+
+Route::group(['prefix' => 'user'], function () {
+    
+    Route::post('login', [AuthController::class,'authenticate'])->name('login.authenticate');
+    
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        
+        Route::post('logout', [AuthController::class,'logout'])->name('logout');
+
+        Route::get('/home', function () {
+            return view('beers');
+        })->name(config('app.user_home_route_name'));
+    });
+    
+});
+
